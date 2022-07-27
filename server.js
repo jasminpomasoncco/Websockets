@@ -1,5 +1,8 @@
-const express = require('express');
+const express = require('express')
+const http = require('http')
+const {Server} = require ('socket.io')
 const router_server = require("./router/router_server");
+
 const app = express();
 const PORT = 8080;
 
@@ -10,7 +13,7 @@ app.use(express.urlencoded({ extended: false  }));
 app.use( express.static(__dirname + '/public'))
 
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + './public/index.html')
+    res.sendFile(__dirname + './public/index.ejs')
 })
 
 app.use('/api/products', router_server);
