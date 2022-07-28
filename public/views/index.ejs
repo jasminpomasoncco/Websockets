@@ -11,10 +11,8 @@
 <body>
 
   <div class="container">
-    <br>
-<form action="/api/products/" method="get">
-    <input type="submit" class="btn btn-primary" value="Get All Products">
-</form>
+
+
 
 <br>
 
@@ -25,9 +23,9 @@
 
 <br>
 <hr>
-<h2>Agregar nuevo producto: </h2>
+<h2>Add new product: </h2>
 <br>
-<form action="/api/products/" method="post">
+<form name="agregarproductos" action="/api/products/" onsubmit="return validateForm()" method="post">
     <label for="title">Title:</label>
     <input type="text"  name="title" id="title"><br><br>
 
@@ -39,8 +37,8 @@
     <input type="submit" class="btn btn-primary" value="Create">
 </form>
 <br>
-<h2>Lista de productos: </h2>
-</div>
+<h2>List of products: </h2>
+
    
     <table class="table table-dark table-hover">
         <thead>
@@ -68,16 +66,35 @@
         <% } %>   
         </tbody>
       </table>
+      
+      
+      <h2>Centro de mensajes: </h2>
+      <p id="email">p</p>
+      <form>
+      <label for="title">Enter your message:</label>
+      <input  id="sms" name="sms" >
+      </form>
+    <br>
+    <input type="submit" id="send" class="btn btn-primary" value="Send">
 
+    <div id="chat"></div>
 
-      <script>
-        function getProductById() {
-            let id = document.getElementById('id').value ;
-            let form = document.getElementById('getProductById');
-            form.setAttribute('action', '/api/products/' + id);
-        }
+<br>
+</div>
+<style>
+  .email{
+    color : blue;
+  }
 
-    </script>
+  .date{
+    color: rgb(112, 65, 4);
+  }
 
+  .sms{
+    color: green;
+  }
+</style>
+   <script src="/socket.io/socket.io.js"></script>
+   <script src="../confg.js"></script>
 </body>
 </html>

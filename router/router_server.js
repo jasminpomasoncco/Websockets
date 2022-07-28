@@ -1,10 +1,12 @@
 const { Router } = require('express');
+
 const Contenedor = require('../contenedor');
 const product = new Contenedor('productos.txt');
 const router_server= Router()
 
 router_server.get('/', async (req, res) => { 
     try {
+        
         const products= await product.getAll()
         res.render('index.ejs', {products})
 
