@@ -20,42 +20,68 @@ const socket = io()
 loadFirstData()
 
 //------------------
+
 const agregarproduct = document.getElementById('createproduct')
-agregarproduct.onclick = e => {
-    e.preventDefault()
-    const title = document.getElementById('title').value
-    const price = document.getElementById('price').value
-    const thumbnail = document.getElementById('thumbnail').value
-    socket.emit('listproducts-in', {title : title, price:price,thumbnail:thumbnail})
+agregarproduct.addEventListener = e => {
+    e.preventDefault();
+    const form = new FormData(e.target);
+    const product = Object.fromEntries(form.entries());
+    socket.emit('crearproduct', product);
 }
 
-socket.on('listproducts-out', data => {
-    console.log(data);
-    renderItem(data)
-})
-
-function renderItem(products) {
-    const products = document.getElementById('listproducts')
-        products.innerHTML += `
-    <tr>
-            <td>${product.id} </td>
-            <td> S/. ${product.id}  </td>
-            <td> <img width="40px" src=" ${product.id} "/></td>
-    </tr>
-    `;
-
+const newsms = document.getElementById('chatsms')
+newsms.addEventListener = e => {
+    e.preventDefault();
+    const chat = new FormData(e.target);
+    const mensaje = Object.fromEntries(chat.entries());
+    socket.emit('addmessage', mensaje);
 }
 
-function loadDataToDiv(products) {
-    console.log(products);
-    data.forEach(d => renderItem(d))
-}
+
+
+socket.on('allproducts', (product) => {
+    loadDataToTbody(product);
+});
+
+socket.on('allsms', (message) => {
+    loadDataToTbody(message);
+});
 
 function loadFirstData() {
-    fetch('/')
+    fetch('/api/products')
         .then((data) => data.json())
         .then((products) => {
-            loadDataToDiv(products.products);
+            loadDataToTbody(products.products);
         })
         .catch((e) => alert(e));
+
+        fetch('/api/sms')
+        .then((data) => data.json())
+        .then((messages) => {
+            loadMessagesToChat(messages.messages);
+        })
+        .catch((e) => alert(e));
+}
+
+
+function loadDataToTbody(products) {
+    const productos = document.getElementById('listproducts');
+
+    products.forEach((product) => {
+        productos.innerHTML += `<tr>
+                                <td>${product.title} </td>
+                                <td>${product.price} </td>
+                                <td> <img width="40px" src=" ${product.thumbnail}"/>/td>
+                            </tr>
+                            `;
+    });
+
+}
+
+
+function loadMessagesToChat(messages) {
+    const chats = document.getElementById('messages');
+    messages.forEach((message) => {
+        chats.innerHTML += `<br> <b style="color:blue"> ${message.email} </b> [<b style="color:maroon">${message.date}</b>]: <i style="color:green">${message.message}</i>`;
+    });
 }

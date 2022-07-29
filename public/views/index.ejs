@@ -11,11 +11,7 @@
 <body>
 
   <div class="container">
-
-
-
 <br>
-
 <form method="get" id="getProductById">
     <input type="number"  name="id" id="id" oninput = "return getProductById(); false;">
     <input type="submit" class="btn btn-primary" value="Get Product by id">
@@ -25,7 +21,7 @@
 <hr>
 <h2>Add new product: </h2>
 <br>
-<form name="agregarproductos"  onsubmit="return validateForm()">
+<form id="createproduct" name="agregarproductos"  onsubmit="return validateForm()">
     <label for="title">Title:</label>
     <input type="text"  name="title" id="title"><br><br>
 
@@ -34,7 +30,7 @@
 
     <label for="thumbnail">Thumbnail:</label>
     <input  type="url" name="thumbnail" id="thumbnail"><br><br>
-    <input type="submit" id="createproduct" class="btn btn-primary" value="Create">
+    <input type="submit" id="create" class="btn btn-primary" value="Create">
 
 </form>
 <br>
@@ -54,31 +50,19 @@
       
       
       <h2>Centro de mensajes: </h2>
-      <form>
+      <form id="chatsms" >
         <label for="title">Enter your email:</label>
       <input id="email" name="email" >
     <br>
-    <div id="chat"></div>
-     <label for="title">Enter your message:</label>
-      <input id="sms" name="sms" >
+    <div id="messages"></div>
+    <label for="title">Enter your message:</label>
+    <input type="text"  name="message" id="message" required>
       <input type="submit" id="send" class="btn btn-primary" value="Send">
 </form>
 <br>
 </div>
-<style>
-  .email{
-    color : blue;
-  }
 
-  .date{
-    color: rgb(112, 65, 4);
-  }
-
-  .sms{
-    color: green;
-  }
-</style>
-   <script src="/socket.io/socket.io.js"></script>
-   <script src="../confg.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="../confg.js"></script>
 </body>
 </html>
