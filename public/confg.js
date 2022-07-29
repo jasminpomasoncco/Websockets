@@ -4,7 +4,7 @@ function validateForm() {
     let z = document.forms["agregarproductos"]["thumbnail"].value;
    
     if (z == "" || x == "" ||y=="" ) {
-        alert("Complete los datos del producto");
+        alert("Complete los datos del producto nuevo");
         return false;
       } 
 }
@@ -22,39 +22,10 @@ if(email == null) {
 }
 
 document.getElementById('email').innerHTML = `Se registró con : ${email}`
+
+//-------------------------
 const socket = io()
 loadFirstData()
 
 //------------------
-
-const boton = document.getElementById('send')
-boton.onclick = e => {
-    e.preventDefault()
-    const mensaje = document.getElementById('sms').value
-    socket.emit('chat-in', {mensaje, email})
-}
-
-socket.on('chat-out', message => {
-    addDataToDiv(message)
-})
-
-function addDataToDiv(message) {
-    const div = document.getElementById('chat')
-    div.innerHTML += `<p><label class= "email">${message.email}</label><label class= "date">[${message.date}] </label> :<label class= "sms"> ${message.sms}</label></p>`
-}
-
-function loadDataToDiv(message) {
-    console.log(message);
-    message.forEach(d => addDataToDiv(d))
-}
-
-
-function loadFirstData() {
-    fetch('/api/products')
-        .then(message => message.json())
-        .then(d => {
-            loadDataToDiv(d.message)
-        })
-        .catch(e => alert(e))
-}
 

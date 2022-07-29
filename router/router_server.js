@@ -6,10 +6,12 @@ const router_server= Router()
 
 router_server.get('/', async (req, res) => { 
     try {
-        
         const products= await product.getAll()
-        res.render('index.ejs', {products})
-
+       // res.render('index.ejs', {products})
+       res.json({
+        products: await product.getAll()
+    });
+    
     } catch (error) {
         res.status(404).json({error : 'Error to load data'})
     }
@@ -32,14 +34,17 @@ router_server.get('/:id', async (req, res) => {
     }
  })
 
- router_server.post('/', async (req, res) => { 
+router_server.post('/', async (req, res) => { 
     try {
         const new_product = await product.save(req.body);
-        res.redirect('/api/products')
+        res.json({
+            'product':new_product
+        })
     } catch (error) {
         res.status(404).json({error : 'Error to load data'})
     }
 })
+
 router_server.put('/:id', async (req, res) => { 
     try {
         const mensaje = await product.updateById(+req.params.id, req.body);
@@ -53,6 +58,7 @@ router_server.put('/:id', async (req, res) => {
         res.status(404).json({error : 'Error to load data'})
     }
  })
+
 router_server.delete('/:id', async (req, res) => { 
     const id = parseInt(req.params.id);
     try {
