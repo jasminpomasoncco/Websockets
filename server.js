@@ -30,16 +30,25 @@ io.on('connection', socket => {
     console.log('Somebody connected');
 
     socket.on('chat-in',  message=> { 
+        const date=Date()
+        const messageOut = {
+            email: message.email,
+            sms: message.sms,
+            date,
+        }
         mensajes.save(message)
-        const messageOut = message
         console.log(messageOut)
         io.sockets.emit('chat-out',messageOut)
         
     })
 
     socket.on('listproducts-in', products => {
+        const productsOut = {
+            title: products.title,
+            price: products.price,
+            thumbnail: products.thumbnail,
+        }
         product.save(products)
-        const productsOut = products
         console.log(productsOut)
         io.sockets.emit('listproducts-out',productsOut)
     })
