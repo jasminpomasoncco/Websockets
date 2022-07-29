@@ -1,19 +1,3 @@
-function validateForm() {
-    let x = document.forms["agregarproductos"]["title"].value;
-    let y = document.forms["agregarproductos"]["price"].value;
-    let z = document.forms["agregarproductos"]["thumbnail"].value;
-   
-    if (z == "" || x == "" ||y=="" ) {
-        alert("Complete los datos del producto nuevo");
-        return false;
-    } 
-}
-
-function getProductById() {
-    let id = document.getElementById('id').value ;
-    let form = document.getElementById('getProductById');
-    form.setAttribute('action', '/api/products/' + id);
-}
 
 //-------------------------
 const socket = io()
@@ -22,20 +6,20 @@ loadFirstData()
 //------------------
 
 const agregarproduct = document.getElementById('createproduct')
-agregarproduct.addEventListener = e => {
+agregarproduct.addEventListener ('submit', (e)  => {
     e.preventDefault();
     const form = new FormData(e.target);
     const product = Object.fromEntries(form.entries());
     socket.emit('crearproduct', product);
-}
+});
 
 const newsms = document.getElementById('chatsms')
-newsms.addEventListener = e => {
+newsms.addEventListener('submit', (e)  => {
     e.preventDefault();
-    const chat = new FormData(e.target);
-    const mensaje = Object.fromEntries(chat.entries());
+    const inputchat = new FormData(e.target);
+    const mensaje = Object.fromEntries(inputchat);
     socket.emit('addmessage', mensaje);
-}
+});
 
 
 
@@ -65,13 +49,13 @@ function loadFirstData() {
 
 
 function loadDataToTbody(products) {
-    const productos = document.getElementById('listproducts');
+    const listproducts = document.getElementById('listproducts');
 
     products.forEach((product) => {
-        productos.innerHTML += `<tr>
+        listproducts.innerHTML += `<tr>
                                 <td>${product.title} </td>
-                                <td>${product.price} </td>
-                                <td> <img width="40px" src=" ${product.thumbnail}"/>/td>
+                                <td> S/.${product.price} </td>
+                                <td> <img width="40px" src=" ${product.thumbnail}"/></td>
                             </tr>
                             `;
     });
@@ -82,6 +66,6 @@ function loadDataToTbody(products) {
 function loadMessagesToChat(messages) {
     const chats = document.getElementById('messages');
     messages.forEach((message) => {
-        chats.innerHTML += `<br> <b style="color:blue"> ${message.email} </b> [<b style="color:maroon">${message.date}</b>]: <i style="color:green">${message.message}</i>`;
+        chats.innerHTML += `<br> <b style="color:blue"> ${message.email} </b> <b style="color:maroon">${message.date}</b>: <i style="color:green">${message.message}</i>`;
     });
 }

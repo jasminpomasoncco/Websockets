@@ -12,7 +12,7 @@ const app = express();
 app.set('views', './public/views')
 app.set('view engine', 'ejs')
 app.use(express.json());
-app.use(express.urlencoded({ extended: true  }));
+app.use(express.urlencoded({ extended: false  }));
 app.use( express.static(__dirname + '/public'))
 
 
@@ -30,7 +30,25 @@ app.use('/api/sms', router_mensajes);
 io.on('connection', socket => {
     console.log('Somebody connected');
 
-    socket.on('crearproduct',  message=> { 
+ socket.on('crearproduct', products => {
+        axios({
+            method: 'post',
+            url:'/api/products', 
+            baseURL: 'http://localhost:8080', 
+            data: products 
+        })
+        .then((response) => {
+            if (response.status === 200) {
+                io.sockets.emit('allproducts', [response.data.products]);
+            } else {
+                console.log('Fail');
+            }
+        })
+        .catch((e) => console.error(e));
+
+    })
+    
+    socket.on('addmessage',  message=> { 
         axios({
             method: 'post',
             url:'/api/sms', 
@@ -49,23 +67,6 @@ io.on('connection', socket => {
 
     })
 
-    socket.on('addmessage', products => {
-        axios({
-            method: 'post',
-            url:'/api/products', 
-            baseURL: 'http://localhost:8080', 
-            data: products 
-        })
-        .then((response) => {
-            if (response.status === 200) {
-                io.sockets.emit('allproducts', [response.data.products]);
-            } else {
-                console.log('Fail');
-            }
-        })
-        .catch((e) => console.error(e));
-
-    })
 })
 
 

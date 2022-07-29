@@ -12,24 +12,17 @@
 
   <div class="container">
 <br>
-<form method="get" id="getProductById">
-    <input type="number"  name="id" id="id" oninput = "return getProductById(); false;">
-    <input type="submit" class="btn btn-primary" value="Get Product by id">
-</form>
-
-<br>
-<hr>
 <h2>Add new product: </h2>
 <br>
-<form id="createproduct" name="agregarproductos"  onsubmit="return validateForm()">
+<form id="createproduct">
     <label for="title">Title:</label>
-    <input type="text"  name="title" id="title"><br><br>
+    <input type="text"  name="title" id="title" required><br><br>
 
     <label for="price">Price:</label>
-    <input   type="number" name="price" id="price"><br><br>
+    <input   type="number" name="price" id="price" required><br><br>
 
     <label for="thumbnail">Thumbnail:</label>
-    <input  type="url" name="thumbnail" id="thumbnail"><br><br>
+    <input  type="url" name="thumbnail" id="thumbnail" required><br><br>
     <input type="submit" id="create" class="btn btn-primary" value="Create">
 
 </form>
@@ -52,13 +45,16 @@
       <h2>Centro de mensajes: </h2>
       <form id="chatsms" >
         <label for="title">Enter your email:</label>
-      <input id="email" name="email" >
+      <input id="email" name="email" required>
     <br>
-    <div id="messages"></div>
-    <label for="title">Enter your message:</label>
+   
+
+    <label for="message">Enter your message:</label>
     <input type="text"  name="message" id="message" required>
       <input type="submit" id="send" class="btn btn-primary" value="Send">
+    <div id="messages"></div>  
 </form>
+
 <br>
 </div>
 

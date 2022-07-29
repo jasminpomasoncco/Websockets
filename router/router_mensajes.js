@@ -5,17 +5,29 @@ const router_mensajes= Router()
 
 router_mensajes.get('/', async (req, res) => { 
     try {
-    const mensajes= await mensaje.getAll()
-    res.json({
-        mensajes: await mensaje.getAll()
-    });
-    
+        res.json({
+            mensajes: await mensaje.getAll()
+        });
     } catch (error) {
-        res.status(404).json({error : 'Error to load sms'})
+        res.status(500).json({
+            error: 'Something went wrong'
+        })
     }
 
 })
 
+router_mensajes.post('/', async (req, res) => { 
+    try {
+        const messageCreated = await mensaje.save(req.body);
+        res.json({
+            'mensaje': messageCreated
+        })
+    } catch (error) {
+        res.status(500).json({
+            error: 'Something went wrong'
+        })
+    }
+})
 
 
 module.exports = router_mensajes
