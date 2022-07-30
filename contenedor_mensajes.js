@@ -5,13 +5,16 @@ class Contenedor2 {
         this.filename = filename;
     }
 
-    async save(mensaje) {
+    async save(message) {
         try {
-            let data = await this.readFile();
-            data.push(mensaje);    
-            await this.writeFile(data);
+            let content = await this.readFile();
+            message.date = this.getDate();
+            
+            content.push(message);
+            
+            await this.writeFile(content);
 
-            return mensaje;
+            return message;
         } catch (error) {
             console.error(error);
         }
@@ -33,14 +36,23 @@ class Contenedor2 {
         }
     }
     
-    async writeFile(data) {
+    async writeFile(content) {
         try {
-            await fs.promises.writeFile(this.filename, JSON.stringify(data));
+            await fs.promises.writeFile(this.filename, JSON.stringify(content));
         } catch (error) {
             console.error(error);
         }
     }
 
+    getDate() {
+
+        const day   = new Date().getDate();
+        const month = new Date().getMonth() + 1;
+        const year  = new Date().getFullYear();
+        const time  = new Date().toLocaleTimeString()
+
+        return `${day}/${month}/${year} ${time}`
+    }
     
 }
 

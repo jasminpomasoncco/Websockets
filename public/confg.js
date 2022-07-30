@@ -66,6 +66,8 @@ function loadDataToTbody(products) {
 function loadMessagesToChat(messages) {
     const chats = document.getElementById('messages');
     messages.forEach((message) => {
-        chats.innerHTML += `<br> <b style="color:blue"> ${message.email} </b> <b style="color:maroon">${message.date}</b>: <i style="color:green">${message.message}</i>`;
+        chats.innerHTML += `
+        <br> <b style="color:blue"> ${message.email} </b> <b style="color:maroon">${message.date}</b>: <i style="color:green">${message.message}</i>
+        `;
     });
 }
