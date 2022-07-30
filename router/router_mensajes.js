@@ -6,7 +6,7 @@ const router_mensajes= Router()
 router_mensajes.get('/', async (req, res) => { 
     try {
         res.json({
-            mensajes: await mensaje.getAll()
+            messages: await mensaje.getAll()
         });
     } catch (error) {
         res.status(500).json({
@@ -22,6 +22,7 @@ router_mensajes.post('/', async (req, res) => {
         res.json({
             'mensaje': messageCreated
         })
+        
     } catch (error) {
         res.status(500).json({
             error: 'Something went wrong'
