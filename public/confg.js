@@ -10,6 +10,7 @@ agregarproduct.addEventListener ('submit', (e)  => {
     e.preventDefault();
     const form = new FormData(e.target);
     const product = Object.fromEntries(form.entries());
+
     socket.emit('crearproduct', product);
 });
 
@@ -28,18 +29,18 @@ socket.on('allproducts', (product) => {
 });
 
 socket.on('allsms', (message) => {
-    loadDataToTbody(message);
+    loadMessagesToChat(message);
 });
 
 function loadFirstData() {
-    fetch('/api/products')
+    fetch('/products')
         .then((data) => data.json())
         .then((products) => {
             loadDataToTbody(products.products);
         })
         .catch((e) => alert(e));
 
-        fetch('/api/sms')
+        fetch('/sms')
         .then((data) => data.json())
         .then((messages) => {
             loadMessagesToChat(messages.messages);

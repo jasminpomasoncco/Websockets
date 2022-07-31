@@ -8,12 +8,13 @@ const router_server = require("./router/router_server");
 const router_mensajes= require("./router/router_mensajes");
 
 const app = express();
+const PORT = process.env.PORT || 8080;
 
 app.set('views', './public/views')
 app.set('view engine', 'ejs')
 app.use(express.json());
 app.use(express.urlencoded({ extended: false  }));
-app.use( express.static(__dirname + '/public'))
+app.use(express.static(__dirname + '/public'))
 
 
 const server = http.createServer(app)
@@ -23,23 +24,23 @@ app.get('/', (req, res) => {
     res.render('index')
 })
 
-app.use('/api/products', router_server);
-app.use('/api/sms', router_mensajes);
+app.use('/products', router_server);
+app.use('/sms', router_mensajes);
 
 
 io.on('connection', socket => {
     console.log('Somebody connected');
 
- socket.on('crearproduct', products => {
+socket.on('crearproduct', product => {
         axios({
             method: 'post',
-            url:'/api/products', 
+            url:'/products', 
             baseURL: 'http://localhost:8080', 
-            data: products 
+            data: product
         })
         .then((response) => {
             if (response.status === 200) {
-                io.sockets.emit('allproducts', [response.data.products]);
+                io.sockets.emit('allproducts', [response.data.product]);
             } else {
                 console.log('Fail');
             }
@@ -51,7 +52,7 @@ io.on('connection', socket => {
     socket.on('addmessage',  message=> { 
         axios({
             method: 'post',
-            url:'/api/sms', 
+            url:'/sms', 
             baseURL: 'http://localhost:8080', 
             data: message 
         })
@@ -64,13 +65,12 @@ io.on('connection', socket => {
         })
         .catch((e) => console.error(e));
 
-
     })
 
 })
 
 
-const PORT = process.env.PORT || 8080
 server.listen(PORT, () => {
-    console.log('Running...');
-})
+    console.log(`Server started on port: ${PORT}`);
+});
+server.on('error', (error) => console.error(error));

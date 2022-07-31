@@ -22,7 +22,6 @@ router_mensajes.post('/', async (req, res) => {
         res.json({
             'mensaje': messageCreated
         })
-        
     } catch (error) {
         res.status(500).json({
             error: 'Something went wrong'
