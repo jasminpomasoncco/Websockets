@@ -1,74 +1,72 @@
-
-//-------------------------
 const socket = io()
 loadFirstData()
 
 //------------------
 
-const agregarproduct = document.getElementById('createproduct')
-agregarproduct.addEventListener ('submit', (e)  => {
+const createproduct_bttn = document.getElementById('create')
+createproduct_bttn.onclick = e => {
     e.preventDefault();
-    const form = new FormData(e.target);
-    const product = Object.fromEntries(form.entries());
-
-    socket.emit('crearproduct', product);
-});
-
-const newsms = document.getElementById('chatsms')
-newsms.addEventListener('submit', (e)  => {
-    e.preventDefault();
-    const inputchat = new FormData(e.target);
-    const mensaje = Object.fromEntries(inputchat);
-    socket.emit('addmessage', mensaje);
-});
-
-
-
-socket.on('allproducts', (product) => {
-    loadDataToTbody(product);
-});
-
-socket.on('allsms', (message) => {
-    loadMessagesToChat(message);
-});
-
-function loadFirstData() {
-    fetch('/products')
-        .then((data) => data.json())
-        .then((products) => {
-            loadDataToTbody(products.products);
-        })
-        .catch((e) => alert(e));
-
-        fetch('/sms')
-        .then((data) => data.json())
-        .then((messages) => {
-            loadMessagesToChat(messages.messages);
-        })
-        .catch((e) => alert(e));
+    const title = document.getElementById('title').value 
+    const price = document.getElementById('price').value 
+    const thumbnail = document.getElementById('thumbnail').value 
+    socket.emit('listproduct-in', {title, price, thumbnail})
 }
 
+const createmessage_bttn = document.getElementById('send')
+createmessage_bttn.onclick = e => {
+    e.preventDefault();
+    const email = document.getElementById('email').value 
+    const message = document.getElementById('message').value 
+    socket.emit('messagess-in', {email, message})
+}
 
-function loadDataToTbody(products) {
-    const listproducts = document.getElementById('listproducts');
+socket.on('listproduct-in', products =>{
+    addDataToDiv(products);
+})
 
-    products.forEach((product) => {
+socket.on('messagess-in', messages =>{
+    addSMSToDiv(messages);
+})
+
+function addDataToDiv(products){
+        const listproducts = document.getElementById('listproducts');
         listproducts.innerHTML += `<tr>
-                                <td>${product.title} </td>
-                                <td> S/.${product.price} </td>
-                                <td> <img width="40px" src=" ${product.thumbnail}"/></td>
+                                <td>${products.title} </td>
+                                <td> S/.${products.price} </td>
+                                <td> <img width="40px" src=" ${products.thumbnail}"/></td>
                             </tr>
                             `;
-    });
-
 }
 
+function addSMSToDiv(messages){
+    const messagess = document.getElementById('messagess');
+    messagess.innerHTML += `
+    <br> <b style="color:blue"> ${messages.email} </b> <b style="color:maroon">${messages.date}</b>: <i style="color:green">${messages.message}</i>
+    `;
+}
 
-function loadMessagesToChat(messages) {
-    const chats = document.getElementById('messages');
-    messages.forEach((message) => {
-        chats.innerHTML += `
-        <br> <b style="color:blue"> ${message.email} </b> <b style="color:maroon">${message.date}</b>: <i style="color:green">${message.message}</i>
-        `;
-    });
+function loadDataToDiv(products) {
+    console.log(products);
+    products.forEach(p => addDataToDiv(p));
+}
+
+function loadSMSToDiv(messages) {
+    console.log(messages);
+    messages.forEach(m => addSMSToDiv(m));
+}
+
+function loadFirstData() {
+    fetch('/api/products')
+    .then(products => products.json())
+    .then(p=> {
+        loadDataToDiv(p.products)
+    })
+        .catch(e => alert(e))
+
+    fetch('/api/messages')
+    .then(messages => messages.json())
+    .then(m=> {
+        loadSMSToDiv(m.messages)
+    })
+        .catch(e => alert(e))
 }

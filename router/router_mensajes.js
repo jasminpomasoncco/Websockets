@@ -20,7 +20,7 @@ router_mensajes.post('/', async (req, res) => {
     try {
         const messageCreated = await mensaje.save(req.body);
         res.json({
-            'mensaje': messageCreated
+            'messages': messageCreated
         })
     } catch (error) {
         res.status(500).json({

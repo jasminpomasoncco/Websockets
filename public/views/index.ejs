@@ -14,7 +14,7 @@
 <br>
 <h2>Add new product: </h2>
 <br>
-<form id="createproduct">
+<form id="create_products">
     <label for="title">Title:</label>
     <input type="text"  name="title" id="title" required><br><br>
 
@@ -37,24 +37,23 @@
           </tr>
         </thead>
         <tbody id="listproducts">
-      
       </tbody>
       </table>
       
       
       <h2>Centro de mensajes: </h2>
-      <form id="chatsms" >
-        <label for="title">Enter your email:</label>
-      <input id="email" name="email" required>
-    <br>
+       
+<form id="chat">
+    <label for="title">Enter your email:</label>
+    <input id="email" name="email" required><br>
     <label for="message">Enter your message:</label>
     <input type="text"  name="message" id="message" required>
-      <input type="submit" id="send" class="btn btn-primary" value="Send">
-
-    <div id="messages"></div>  
+    <input type="submit" id="send" class="btn btn-primary" value="Send">
 </form>
-
+    <div id="messagess"></div>
 <br>
+
+
 </div>
 
   <script src="/socket.io/socket.io.js"></script>

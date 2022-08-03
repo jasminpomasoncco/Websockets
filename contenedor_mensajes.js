@@ -9,7 +9,6 @@ class Contenedor2 {
         try {
             let content = await this.readFile();
             message.date = this.getDate();
-            
             content.push(message);
             
             await this.writeFile(content);
